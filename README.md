@@ -11,6 +11,7 @@ This repository demonstrates a **production-ready integration** between **Cloudf
 - ✅ Health monitoring and automated failover
 - ✅ Infrastructure as Code (Terraform)
 - ✅ Performance optimization and caching strategies
+- ✅ Production-ready Health Check API
 
 ## 📋 Table of Contents
 

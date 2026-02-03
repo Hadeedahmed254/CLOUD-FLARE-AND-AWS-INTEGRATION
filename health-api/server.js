@@ -1,4 +1,16 @@
 const express = require('express');
+/**
+ * Cloudflare + AWS Health Check API
+ * 
+ * Production-ready health check endpoints for:
+ * - Cloudflare Load Balancer monitoring
+ * - AWS Application Load Balancer health checks
+ * - Multi-region failover validation
+ * 
+ * Author: Hadeed Ahmed
+ * Version: 1.0.0
+ */
+
 const os = require('os');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,7 +34,7 @@ app.get('/health', (req, res) => {
     region: process.env.AWS_REGION || 'unknown',
     version: process.env.APP_VERSION || '1.0.0'
   };
-  
+
   res.status(200).json(healthCheck);
 });
 
@@ -30,7 +42,7 @@ app.get('/health', (req, res) => {
 app.get('/health/detailed', (req, res) => {
   const memoryUsage = process.memoryUsage();
   const cpuUsage = process.cpuUsage();
-  
+
   const detailedHealth = {
     status: 'healthy',
     timestamp: new Date().toISOString(),
@@ -60,23 +72,24 @@ app.get('/health/detailed', (req, res) => {
       }
     }
   };
-  
+
   res.status(200).json(detailedHealth);
 });
 
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
-    message: 'Cloudflare + AWS Integration Demo',
-    region: process.env.AWS_REGION || 'unknown',
-    hostname: os.hostname(),
-    timestamp: new Date().toISOString(),
+    service: 'Cloudflare + AWS Health Check API',
+    version: '1.0.0',
+    author: 'Hadeed Ahmed',
+    status: 'operational',
     endpoints: {
       health: '/health',
-      detailedHealth: '/health/detailed',
-      api: '/api',
+      detailed_health: '/health/detailed',
+      api: '/api/status',
       static: '/static'
-    }
+    },
+    documentation: 'https://github.com/Hadeedahmed254/CLOUD-FLARE-AND-AWS-INTEGRATION'
   });
 });
 
@@ -97,13 +110,13 @@ app.get('/api/status', (req, res) => {
 // Static content endpoint (for cache testing)
 app.get('/static/:filename', (req, res) => {
   const { filename } = req.params;
-  
+
   // Set cache headers
   res.set({
     'Cache-Control': 'public, max-age=86400',
     'Content-Type': 'application/json'
   });
-  
+
   res.json({
     filename,
     region: process.env.AWS_REGION || 'unknown',
