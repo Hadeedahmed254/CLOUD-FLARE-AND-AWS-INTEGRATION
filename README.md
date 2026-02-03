@@ -26,6 +26,40 @@ This repository demonstrates a **production-ready integration** between **Cloudf
 
 ## 🏗️ Architecture Overview
 
+![Cloudflare AWS Architecture](docs/architecture-diagram.png)
+
+### Architecture Diagram Explanation
+
+This architecture implements a **highly available, multi-region deployment** with automatic failover:
+
+**Top Layer - Cloudflare Edge Network:**
+- Global DNS management with DNSSEC
+- CDN with 275+ Points of Presence worldwide
+- Web Application Firewall (WAF) protecting against OWASP Top 10
+- DDoS protection at layers 3, 4, and 7
+
+**Middle Layer - Intelligent Load Balancing:**
+- Cloudflare Load Balancer with health checks every 30 seconds
+- Automatic traffic routing to healthy regions
+- Dynamic latency-based steering for optimal performance
+
+**Bottom Layer - Multi-Region AWS Infrastructure:**
+- **Primary Region (us-east-1)**: Full production capacity
+  - VPC with public/private subnet architecture
+  - Application Load Balancer with SSL termination
+  - Auto Scaling Group with EC2/ECS instances
+  - RDS database with Multi-AZ deployment
+  
+- **Secondary Region (us-west-2)**: Standby for failover
+  - Identical architecture with reduced capacity
+  - RDS Read Replica (can be promoted to primary)
+  - Automatic activation during primary region failure
+
+**Data Replication:**
+- Bidirectional arrows show database replication between regions
+- Near real-time synchronization (< 5 second lag)
+- Ensures data consistency during failover
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      CLOUDFLARE EDGE                        │
