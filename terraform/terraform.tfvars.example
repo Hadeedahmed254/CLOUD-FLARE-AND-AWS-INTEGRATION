@@ -1,0 +1,62 @@
+# ============================================
+# EXAMPLE TERRAFORM VARIABLES
+# Copy this file to terraform.tfvars and update with your values
+# ============================================
+
+# General Settings
+environment      = "production"
+owner_email      = "your-email@example.com"
+notification_email = "alerts@example.com"
+
+# Domain Configuration
+domain_name = "example.com"
+
+# Cloudflare API Token
+# Generate at: https://dash.cloudflare.com/profile/api-tokens
+# Required permissions: Zone:Read, DNS:Edit, Load Balancers:Edit
+cloudflare_api_token = "your-cloudflare-api-token-here"
+
+# AWS Regions
+primary_region   = "us-east-1"
+secondary_region = "us-west-2"
+
+# Networking - Primary Region
+primary_vpc_cidr = "10.0.0.0/16"
+primary_azs      = ["us-east-1a", "us-east-1b", "us-east-1c"]
+
+# Networking - Secondary Region
+secondary_vpc_cidr = "10.1.0.0/16"
+secondary_azs      = ["us-west-2a", "us-west-2b", "us-west-2c"]
+
+# Compute Configuration
+instance_type             = "t3.medium"
+min_instances             = 2
+max_instances             = 10
+desired_instances         = 3
+min_instances_secondary   = 1
+max_instances_secondary   = 5
+desired_instances_secondary = 2
+
+# Database Configuration
+database_name        = "appdb"
+db_master_username   = "admin"
+db_master_password   = "CHANGE-THIS-TO-SECURE-PASSWORD"  # Use AWS Secrets Manager in production
+db_instance_class    = "db.t3.medium"
+db_allocated_storage = 100
+
+# Health Check Configuration
+health_check_path                = "/health"
+health_check_interval            = 30
+health_check_timeout             = 10
+health_check_healthy_threshold   = 2
+health_check_unhealthy_threshold = 3
+
+# SSL/TLS Configuration
+ssl_policy = "ELBSecurityPolicy-TLS-1-2-2017-01"
+
+# Additional Tags (Optional)
+additional_tags = {
+  CostCenter = "Engineering"
+  Project    = "CloudflareAWSIntegration"
+  Terraform  = "true"
+}
